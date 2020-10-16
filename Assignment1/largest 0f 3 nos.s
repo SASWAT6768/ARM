@@ -2,9 +2,9 @@
      EXPORT __main
 	 ENTRY 
 __main  FUNCTION		         
-        MOV R0,#23			;SETTING FIRST 	VALUE
-		MOV R1,#22			;SETTING SECOND VALUE
-		MOV R2,#11          ;SETTING THIRD VALUE
+        MOV R0,#31			;SETTING FIRST 	VALUE
+		MOV R1,#30			;SETTING SECOND VALUE
+		MOV R2,#7          ;SETTING THIRD VALUE
 		MOV R5,#0x20000000
 		CMP R0,R1			;Comparing R0,R1 and storing maximum in R3
 		BPL R0GR1 
