@@ -4,7 +4,7 @@
 __main  FUNCTION		         
         	MOV R0,#42			;	take any values for A,B A=42
 		    MOV R1,#12			;	B=12
-		    MOV R2,#0x10000000	;	        address for storing largest no.
+		    MOV R2,#0x10000000	;	        address for storing GCD
 		
 WHILE		CMP R0,R1		;	While(A!=B)
 			BEQ ENDLOOP		;
