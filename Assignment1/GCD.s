@@ -17,7 +17,7 @@ ELSELOOP	SUB R1,R1,R0	;	B=B-A
 			B WHILE			;
 			
  
-ENDLOOP		STR R0,[R2]		;	Store data back to 0x10000000
+ENDLOOP		STR R0,[R2]		;	Store in 0x10000000
 		 
      ENDFUNC
      END
