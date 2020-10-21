@@ -9,8 +9,8 @@ __main  FUNCTION
 		VMOV.F32 S1,#1.0                  ;X^N
 OE      VMOV.F32 S6,S4;                  S6=S4
         VDIV.F32 S6,S2,#2.0;             TO CHECK WHETHER ODD OR EVEN
-        MLS S6,S6,S2,#2.0;               finding MOD; for odd it will be non-zero and for even it is 0
-		CMP S6,#0;
+        VMLS.F32 S6,S6,S2,#2.0;               finding MOD; for odd it will be non-zero and for even it is 0
+		VCMP.F32 S6,#0;
 		IT EQ
 		VNEGEQ.F32 S4,S4;
 LOOP	VMUL.F32 S1,S1,S0;              ;S1=S1*X
