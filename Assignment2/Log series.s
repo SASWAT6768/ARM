@@ -1,8 +1,8 @@
-	AREA appcode,CODE,READONLY
-    EXPORT __main
-		ENTRY 
-__main  FUNCTION			
-		VLDR.F32 S0,=0.5               ;S0=X HERE X HAS TO BE GREATER THAN -1
+     area     appcode, CODE, READONLY
+     export __main
+	 ENTRY 
+__main  function		 
+        VMOV.F32 S0,#0.5               ;S0=X HERE X HAS TO BE GREATER THAN -1
 		MOV R1,#10                      ;(NUMBER OF TERMS) 
 	    VMOV.F32 S3,#0.0                  ;store the result of LOG(1+X)
 		VMOV.F32 S2,#1.0                  ;DENOMINATOR
@@ -13,7 +13,7 @@ OE      VMOV.F32 S6,S4;                  S6=S4
 		VCMP.F32 S6,#0;
 		IT EQ
 		VNEGEQ.F32 S4,S4;
-LOOP	VMUL.F32 S1,S1,S0;              ;S1=S1*X
+LOOP	VMUL.F32 S1,S1,S0            ;S1=S1*X
 		VDIV.F32 S4,S1,S2               ;S4=S1/N
 		//VMOV.F32 S4,S1;
 		B OE;
@@ -22,6 +22,6 @@ LOOP	VMUL.F32 S1,S1,S0;              ;S1=S1*X
 		SUB R1,R1,#1                    
 		CMP R1,#0
 		BNE LOOP                        ;BRANCH TO LOOP 
-stop    B stop                          ; stop program
-     ENDFUNC
-	 END
+stop    B stop                          ; stop program          
+     endfunc
+     end
