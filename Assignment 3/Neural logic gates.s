@@ -1,238 +1,178 @@
- AREA    exponential,CODE,READONLY
-     IMPORT printMsg
-	 IMPORT print1	 
-     EXPORT __main
-     ENTRY 
-__main  FUNCTION	
-; IGNORE THIS PART 	
-		;MOV R4,#1 ;for logic initial;AND LOGIC VALUE
-		MOV R12,#7 ;for logic increase
+AREA    appcode ,CODE,READONLY
+	IMPORT printMsg1
+	IMPORT printMsg2
+	IMPORT printMsg3
+	IMPORT printMsg4
+	IMPORT printMsg5
+	IMPORT printMsg4p
+    EXPORT __main
+    ENTRY
+__main    FUNCTION
+	MOV R4,#1; Counting Variable 'i'	
+    MOV R5,#25; Holding the Number of Terms in Series 'n'
+        
+				
+	VLDR.F32 S0,=1 ; Used to store the final sum of the exponent(e^x)  
+	VLDR.F32 S1,=1; Temp variable to store intermediate multiplication result
+	VLDR.F32 S6,=1; Temp variable to store the result of the factorial
+	
+	VLDR.F32 S4,=1; Storing constant 1 in reg s4
+	VLDR.F32 S25,=0.5; Value to compare for deciding logic value 0 or 1 
+
+; Registers S7 to S8 will hold weights and bias value
+
+AND_logic	BL printMsg1
+	VLDR.F32 S7,=-0.1  ;Initializing values as per the data given in python file
+	VLDR.F32 S8,=0.2
+	VLDR.F32 S9,=0.2
+	VLDR.F32 S10,=-0.2
+	B compute
 		
-		MOV R5,#6 ;for logic or
-		MOV R6,#5 ;for logic not
-		MOV R7,#4 ;for logic nand 
-		MOV R8,#3;for logic nor 
-		MOV R9,#2 ;for logic xor
-		MOV R10,#1 ;for logic xnor 
-
-		MOV R11,#7;for dataset selection		
-		MOV R3,#7;for dataset selection	
-		B logic_and
-
-			 
-;LOOP_A  	    CMP R4,R5
-;				BEQ logic_or
+OR_logic	BL printMsg2
+	VLDR.F32 S7,=-0.1  ;Initializing values as per the data given in python file
+	VLDR.F32 S8,=0.7
+	VLDR.F32 S9,=0.7
+	VLDR.F32 S10,=-0.1
+	B compute
 		
+NOT_logic	BL printMsg3
+	VLDR.F32 S7,=0.5  ;Initializing values as per the data given in python file
+	VLDR.F32 S8,=-0.7
+	VLDR.F32 S9,=0
+	VLDR.F32 S10,=0.1
+	B compute
+		
+NAND_logic	BL printMsg4
+	VLDR.F32 S7,=0.6  ;Initializing values as per the data given in python file
+	VLDR.F32 S8,=-0.8
+	VLDR.F32 S9,=-0.8
+	VLDR.F32 S10,=0.3
+	B compute
+		
+NOR_logic	BL printMsg5
+	VLDR.F32 S7,=0.5  ;Initializing values as per the data given in python file
+	VLDR.F32 S8,=-0.7
+	VLDR.F32 S9,=-0.7
+	VLDR.F32 S10,=0.1
+	B compute
+		
+		
+compute	BL Data_Set1
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;logics to select;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-logic_and          ;weights w0 w1 w2
-				   VLDR.F32 s3 ,=-0.1 	;w0
-		           VLDR.F32 s4 ,=0.2    ;w1   
-                   VLDR.F32	s15 ,=0.2 	;w2
-				   ;Bias
-                   VLDR.F32 s6 ,=-0.2;  bias  
-                   B  dataset
-
-
-logic_or           ;weights w0 w1 w2
-				   VLDR.F32 s3 ,=-0.1 	;w0
-		           VLDR.F32 s4 ,=0.7    ;w1   
-                   VLDR.F32	s15 ,=0.7 	;w2
-				   ;Bias
-                   VLDR.F32 s6 ,=-0.1;  bias
-                  B  dataset
+Data_Set1	MOV R0, #1; input A of logic gate
+			VMOV.F32 S16,R0; Shifting input A to fp register
+			VCVT.F32.S32 S16,S16; converting input A to signed fp number
 			
-logic_not          ;weights w0 w1 w2
-				   VLDR.F32 s3 ,=0.5 	;w0
-		           VLDR.F32 s4 ,=-0.7   ;w1   
-		           VLDR.F32 s15 ,=0   ;w1   
-		   		   ;Bias
-                  VLDR.F32 s6 ,=0.1;   bias 
-                  B  dataset
+			MOV R1, #0; input B of logic gate
+			VMOV.F32 S17, R1; Shifting input B to fp register
+			VCVT.F32.S32 S17,S17; converting input B to signed fp number
+			
+			MOV R2, #0; input C of logic gate
+			VMOV.F32 S18,R2; Shifting input C to fp register
+			VCVT.F32.S32 S18,S18; converting input C to signed fp number
+			B WEIGHT_CALCULATION
+			
+Data_Set2	MOV R0, #1; input A of logic gate
+			VMOV.F32 S16,R0; Shifting input A to fp register
+			VCVT.F32.S32 S16,S16; converting input A to signed fp number
+			MOV R1, #0; input B of logic gate
+			VMOV.F32 S17, R1; Shifting input B to fp register
+			VCVT.F32.S32 S17,S17; converting input B to signed fp number
+			MOV R2, #1; input C of logic gate
+			VMOV.F32 S18,R2; Shifting input C to fp register
+			VCVT.F32.S32 S18,S18; converting input C to signed fp number
+			B WEIGHT_CALCULATION
+			
+Data_Set3	MOV R0, #1; input A of logic gate
+			VMOV.F32 S16,R0; Shifting input A to fp register
+			VCVT.F32.S32 S16,S16; converting input A to signed fp number
+			MOV R1, #1; input B of logic gate
+			VMOV.F32 S17, R1; Shifting input B to fp register
+			VCVT.F32.S32 S17,S17; converting input B to signed fp number
+			MOV R2, #0; input C of logic gate
+			VMOV.F32 S18,R2; Shifting input C to fp register
+			VCVT.F32.S32 S18,S18; converting input C to signed fp number
+			B WEIGHT_CALCULATION
+			
+Data_Set4	MOV R0, #1; input A of logic gate
+			VMOV.F32 S16,R0; Shifting input A to fp register
+			VCVT.F32.S32 S16,S16; converting input A to signed fp number
+			MOV R1, #1; input B of logic gate
+			VMOV.F32 S17, R1; Shifting input B to fp register
+			VCVT.F32.S32 S17,S17; converting input B to signed fp number
+			MOV R2, #1; input C of logic gate
+			VMOV.F32 S18,R2; Shifting input C to fp register
+			VCVT.F32.S32 S18,S18; converting input C to signed fp number
+			B WEIGHT_CALCULATION
 
-
-logic_nand         ;weights w0 w1 w2
-				   VLDR.F32 s3 ,=0.6 	;w0
-		           VLDR.F32 s4 ,=-0.8   ;w1   
-                   VLDR.F32	s15 ,=-0.8 	;w2
-				   ;Bias
-                   VLDR.F32 s6 ,=0.3;   bias   
-                   B  dataset
-				   
-				   
-logic_nor          ;weights w0 w1 w2
-				   VLDR.F32 s3 ,=0.5 	;w0
-		           VLDR.F32 s4 ,=-0.7   ;w1   
-                   VLDR.F32	s15 ,=-0.7 	;w2
-				   ;Bias
-                   VLDR.F32 s6 ,=0.1;   bias   
-                   B  calculation
-
-logic_xor          ;weights w0 w1 w2
-				   VLDR.F32 s3 ,=-5 	;w0
-		           VLDR.F32 s4 ,=20     ;w1   
-                   VLDR.F32	s15 ,=10 	;w2
-				   ;Bias
-                  VLDR.F32 s6 ,=1;   bias   
-                   B  dataset
-
-logic_xnor         ;weights w0 w1 w2
-				   VLDR.F32 s3 ,=-5 	;w0
-		           VLDR.F32 s4 ,=20     ;w1   
-                   VLDR.F32	s15 ,=10 	;w2
-				   ;Bias
-                   VLDR.F32 s6 ,=1;   bias   
-                   B  dataset
-
-;;;;;;;;;;;;;;;;;;;DATA SET SELECTION ;;;;;;;;;;;;;;;;;;;;;;;;
-
-dataset CMP R3,R11
-		BEQ set_1 
-
-       ; CMP R11,R5
-		;BEQ set_2 
+WEIGHT_CALCULATION	VMUL.F32 S19,S7,S16;
+					VMOV.F32 S22,S19
+					VMUL.F32 S20,S8,S17
+					VADD.F32 S22, S22, S20
+					VMUL.F32 S21,S9,S18
+					VADD.F32 S22, S22, S21
+					VADD.F32 S22, S22, S10; Final value is computed and stored in S22		
+					B exp
+				
+exp   CMP R4,R5; 	Compare values of 'i' and 'n' 
+      BLE loop; 	if i < n goto loop
+      B sigmoid_func;		else goto sigmoid function
 		
-        ;CMP R11,R6
-		;BEQ set_3 
+loop  VMUL.F32 S1,S1,S22; temp = temp*x
+	  VMOV.F32 S3,S1;
+      VMOV.F32 S5,R4; 	Moving bitstream from register R4 to floating register S5
+      VCVT.F32.S32 S5, S5;	Converting bitstream into floating point number
 		
-        ;CMP R11,R7
-		;BEQ set_4 
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;dataset selection;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-set_1   VLDR.F32 s0 , =1 ;data 1 (x1)
-        VLDR.F32 s1 , =0 ;data 2 (x2)
-        VLDR.F32 s2 , =0 ;data 3 (x3)	
-		B calculation
+	VMUL.F32 S6,S6,S5;	Computing factorial and store result in S6
+    VDIV.F32 S3,S3,S6;	Divide temp by factorial S6 and store it back in temp
+    VADD.F32 S0,S0,S3;	Final exponential series result is stored in S0
 		
-set_2	VLDR.F32 s0 , =1 ;data 1 (x1)
-        VLDR.F32 s1 , =0 ;data 2 (x2)
-        VLDR.F32 s2 , =1 ;data 3 (x3)
-		B calculation
+    ADD R4,R4,#1;	Increment the counter variable 'i'
+    B exp;	Again goto comparison
+
+sigmoid_func 
+	VADD.F32 S14,S4,S0 ;	Calculating (1 + e^x)
+	VDIV.F32 S15,S0,S14;	Calculating value of sigmoid (e^x/(1+e^x))
+	VCMP.F32 S15,S25;	Comparing the result of sigmoid function with 0.5
+	VMRS.F32 APSR_NZCV, FPSCR
+	ITE HI
+	MOVHI R3,#1
+	MOVLS R3,#0
+	BL printMsg4p
 	
+	; Need to initialize the below four values as the data set will be changed four times for each LOGIC GATE 
 	
-set_3	VLDR.F32 s0 , =1 ;data 1 (x1)
-        VLDR.F32 s1 , =1 ;data 2 (x2)
-        VLDR.F32 s2 , =0 ;data 3 (x3)
-		B calculation
+	MOV R4,#1
+	VLDR.F32 S0,=1 ; Used to store the final sum of the exponent(e^x)  
+	VLDR.F32 S1,=1; Temp variable to store intermediate multiplication result
+	VLDR.F32 S6,=1; Temp variable to store the result of the factorial
 
+	;Iterations for further three sets of inputs
+	ADD R9, R9,#1
+	CMP R9,#1
+	BEQ Data_Set2
+	CMP R9,#2
+	BEQ Data_Set3
+	CMP R9,#3
+	BEQ Data_Set4
+	MOV R9,#0
+	ADD R10, R10,#1
+	
+	;Iterations for LOGIC GATES
+	CMP R10,#1	;Go to logic OR 
+	BEQ OR_logic
 
-set_4	VLDR.F32 s0 , =1 ;data 1 (x1)
-        VLDR.F32 s1 , =1 ;data 2 (x2)
-        VLDR.F32 s2 , =1 ;data 3 (x3)
-		B calculation
+	CMP R10,#2	;Go to logic NOT 
+	BEQ NOT_logic
+
+	CMP R10,#3	;Go to logic NAND 
+	BEQ NAND_logic
+
+	CMP R10,#4	;Go to logic NOR 
+	BEQ NOR_logic
+
+	B stop
 		
-		
-calculation       ;z=wo.x0 + w1.x1 + w2.x2
-				  VMUL.F32 s7,s0,s3   ;w0.x0
-				  VMUL.F32 s8,s1,s4   ;w1.x1
-				  VMUL.F32 s19,s2,s15   ;w2.x2
-				  VADD.F32 s18,s7,s8   ;w0.x0 + w1.x1
-				  VADD.F32 s20,s18,s19   ;z = w0.x0 + w1.x1 + w2.x2 ;Z is stored in s9
-				  VADD.F32 s22,s6,s20   ;z = w0.x0 + w1.x1 + w2.x2 + bias;Z is stored in s9
-   			     ;VADD.F32 s22,s22,s21   ;z = w0.x0 + w1.x1 + w2.x2 + bias;Z is stored in s9
-  				  B exp11
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-exp11           MOV R2,#10 ;   number of times the loop runs ,the value 'n'
-	            MOV R1,#1;initial value from which the loop starts 'i'
-				VLDR.F32 S10,=1;Holding the sum of series elements 's'
-				VLDR.F32 S11,=1;Temp Variable to hold the intermediate series elements 't'
-				;VLDR.F32 s22,=0   ;
-				B exp1
-
-
-exp1    		;VMOV.F32 S9,R9;Moving the bit stream in R1('i') to S5(floating point register)
-				CMP R1,R2;Compare 'i' and 'n' 
-				BLE exp;if i < n goto LOOP
-				B Sigmoid
-
-exp				VMUL.F32 S11,S11,S22;t = t*x
-				VMOV.F32 S5,R2;Moving the bit stream in R1('i') to S5(floating point register)
-				VCVT.F32.U32 S5, S5;Converting the bitstream into unsigned fp Number 32 bit
- 				VDIV.F32 S11,S11,S5;Divide t by 'i' and store it back in 't'
-				VADD.F32 S11,S10,S11;Finally add 's' to 't' and store it in 's'
-				SUB R2,R2,#1;Increment the counter variable 'i'
-				B exp1;Again goto comparision	
-
-Sigmoid  		VLDR.F32 S12,=1
-				VDIV.F32 S11,S12,S11
-				VADD.F32 S13,S11,S12
-				VDIV.F32 S14,S12,S13
-				
-				;;;;;;;;;;;;;;;;;;;;;;;;;;;
-				MOV R0,R12	
-				VCVT.S32.F32 s0,s0
-				VCVT.S32.F32 s1,s1	
-				VCVT.S32.F32 s2,s2				
-				VMOV.F32 R1,s0
-				VMOV.F32 R2,s1
-				VMOV.F32 R3,s2
-				BL printMsg
-				;;;;;;;;;;;;;;;;;;;;;;
-				;VCVT.S32.F32 S14,S14				
-				VMOV.F32 R5,S14
-				VLDR.F32 S31,=0.5
-				
-				;VCVT.S32.F32 S31,S31
-				VMOV.F32 R6,S31;
-				CMP R5,R6
-				ITE LT
-				MOVLT R0,#0
-				MOVGE R0,#1
-				;MOV R0,R8
-				BL print1
-				;;;;;;;;;;;;;;;;;;;;;;;;;
-
-				
-				MOV R5,#6 ;
-				MOV R6,#5 ;
-				MOV R7,#4 ;				
-				MOV R8,#3;
-				MOV R9,#2 ;
-				MOV R10,#1 ; 
-				
-				
-				SUB R11,R11,#1
-				
-				CMP R11,R5
-				BEQ set_2 
-		
-				CMP R11,R6
-				BEQ set_3 
-		
-				CMP R11,R7
-				BEQ set_4 
-				
-				B loop_logic
-				
-loop_logic		SUB R12,R12,#1
-				
-				MOV R11,#7 ; 				
-				CMP R12,R5
-				BEQ logic_or
-				
-				CMP R12,R6
-				BEQ logic_not
-		
-				CMP R12,R7
-				BEQ logic_nand
-		
-				CMP R12,R8
-				BEQ logic_nor
-		
-				CMP R12,R9
-				BEQ logic_xor
-		
-				CMP R12,R10
-				BEQ logic_xnor	
-				
-stop       B   stop		
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-        endfunc
-      end
+stop    B stop
+        ENDFUNC
+        END
