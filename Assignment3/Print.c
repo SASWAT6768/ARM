@@ -74,6 +74,34 @@ void printMsg5(const int a)
 	 sprintf(Msg, "%x", a);
 	 ptr = Msg ;
    }	 
+void printMsg6(const int a)
+{
+	 char Msg[100];
+	 char *ptr;
+	 sprintf(Msg,"\n Logic Function: XOR");
+	 ptr = Msg ;
+   while(*ptr != '\0')
+	 {
+      ITM_SendChar(*ptr);
+      ++ptr;
+   }
+	 sprintf(Msg, "%x", a);
+	 ptr = Msg ;
+   }	
+void printMsg7(const int a)
+{
+	 char Msg[100];
+	 char *ptr;
+	 sprintf(Msg,"\n Logic Function: XNOR");
+	 ptr = Msg ;
+   while(*ptr != '\0')
+	 {
+      ITM_SendChar(*ptr);
+      ++ptr;
+   }
+	 sprintf(Msg, "%x", a);
+	 ptr = Msg ;
+   }	
 
 void printMsg2p(const int a, const int b)
 {
