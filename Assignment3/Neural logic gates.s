@@ -5,6 +5,9 @@ AREA    factorial ,CODE,READONLY
 	IMPORT printMsg3
 	IMPORT printMsg4
 	IMPORT printMsg5
+	IMPORT printMsg6
+	IMPORT printMsg7
+	IMPORT printMsg2p
 	IMPORT printMsg4p
     
     ENTRY
@@ -55,6 +58,18 @@ NOR_logic	BL printMsg5
 	VLDR.F32 S8,=-0.7
 	VLDR.F32 S9,=-0.7
 	VLDR.F32 S10,=0.1
+	B compute
+XOR_logic	BL printMsg6
+	VLDR.F32 S7,=-5  ;Initializing values as per the data given in python file
+	VLDR.F32 S8,=20
+	VLDR.F32 S9,=10
+	VLDR.F32 S10,=1
+	B compute
+XNOR_logic	BL printMsg7
+	VLDR.F32 S7,=-5  ;Initializing values as per the data given in python file
+	VLDR.F32 S8,=20
+	VLDR.F32 S9,=10
+	VLDR.F32 S10,=1
 	B compute
 		
 		
@@ -172,6 +187,15 @@ sigmoid_func
 	CMP R10,#4	;Go to logic NOR 
 	BEQ NOR_logic
 
+        CMP R10,#5	;Go to logic XOR 
+	BEQ XOR_logic
+	
+	CMP R10,#6	;Go to logic XNOR 
+	BEQ XNOR_logic
+	
+	CMP R10,#7	;Go to logic AND
+	BEQ AND_logic
+	
 	B stop
 		
 stop    B stop
